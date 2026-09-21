@@ -56,7 +56,12 @@ public sealed class UniFlowDbContext : DbContext
             entity.HasKey(item => item.UserId);
             entity.Property(item => item.Name).HasMaxLength(160);
             entity.Property(item => item.Email).HasMaxLength(180);
+            entity.Property(item => item.PhoneNumber).HasMaxLength(32);
+            entity.Property(item => item.Cargo).HasMaxLength(120);
+            entity.Property(item => item.UserType).HasMaxLength(40);
+            entity.Property(item => item.AccessModules).HasMaxLength(800);
             entity.Property(item => item.PassHash).HasMaxLength(512);
+            entity.Property(item => item.CriadoEm).HasDefaultValueSql("now()");
         });
 
         modelBuilder.Entity<Planos>(entity =>
@@ -91,7 +96,17 @@ public sealed class UniFlowDbContext : DbContext
             entity.Property(item => item.Tipo).HasMaxLength(40);
             entity.Property(item => item.CNPJ).HasMaxLength(18);
             entity.Property(item => item.nome).HasMaxLength(180);
+            entity.Property(item => item.NomeFantasia).HasMaxLength(180);
             entity.Property(item => item.UF).HasMaxLength(2);
+            entity.Property(item => item.InscricaoEstadual).HasMaxLength(30);
+            entity.Property(item => item.InscricaoMunicipal).HasMaxLength(30);
+            entity.Property(item => item.Segmento).HasMaxLength(120);
+            entity.Property(item => item.EmailPrincipal).HasMaxLength(180);
+            entity.Property(item => item.Telefone).HasMaxLength(32);
+            entity.Property(item => item.Site).HasMaxLength(240);
+            entity.Property(item => item.Plano).HasMaxLength(80);
+            entity.Property(item => item.Situacao).HasMaxLength(40);
+            entity.Property(item => item.CriadoEm).HasDefaultValueSql("now()");
         });
 
         modelBuilder.Entity<Enderecos>(entity =>

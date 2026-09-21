@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using back.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using back.Infrastructure.Persistence;
 namespace back.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(UniFlowDbContext))]
-    partial class UniFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260921205312_ContractingCompaniesRegistration")]
+    partial class ContractingCompaniesRegistration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,9 +305,8 @@ namespace back.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(18)");
 
                     b.Property<DateTime>("CriadoEm")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
+                        .HasDefaultValueSql("now()")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("EmailPrincipal")
                         .IsRequired()
@@ -706,28 +708,10 @@ namespace back.Infrastructure.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("AccessModules")
-                        .IsRequired()
-                        .HasMaxLength(800)
-                        .HasColumnType("character varying(800)");
-
-                    b.Property<string>("Cargo")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
-
-                    b.Property<DateTime>("CriadoEm")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(180)
                         .HasColumnType("character varying(180)");
-
-                    b.Property<int>("EmpresaId")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -745,21 +729,11 @@ namespace back.Infrastructure.Persistence.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
 
                     b.HasKey("UserId");
 

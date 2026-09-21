@@ -1,154 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { App } from './app';
-import { ProductServicesApiService } from './features/catalog/services/product-services-api.service';
-import { PricingApiService } from './features/pricing/services/pricing-api.service';
+import { routes } from './app.routes';
 
 describe('App', () => {
+  const saasAdminStorageKey = 'uniflow.saasAdmin';
+
   beforeEach(async () => {
+    localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [
-        {
-          provide: ProductServicesApiService,
-          useValue: {
-            getProducts: () =>
-              of([
-                {
-                  id: '55555555-5555-5555-5555-555555555555',
-                  internalCode: '000154',
-                  description: 'Oleo Motor Sintetico 5W30',
-                  itemType: 'Produto',
-                  category: 'Lubrificantes',
-                  ncm: '2710.19.32',
-                  currentCost: 106,
-                  status: 'Ativo',
-                  taxCoreStatus: 'Validado',
-                },
-              ]),
-            getDraft: () =>
-              of({
-                general: {
-                  id: null,
-                  itemType: 'Product',
-                  internalCode: '000154',
-                  barcode: '7891234567890',
-                  description: 'Oleo Motor Sintetico 5W30',
-                  category: 'Lubrificantes',
-                  brand: 'Shell',
-                  unit: 'UN',
-                  active: true,
-                },
-                fiscal: {
-                  ncm: '2710.19.32',
-                  ncmDescription: 'Oleos lubrificantes derivados de petroleo.',
-                  origin: '0 - Nacional',
-                  cest: '06.007.00',
-                  anpCode: '620501001',
-                  taxClassification: 'Classificacao automatica pelo TaxCore',
-                  taxCoreStatus: 'Classificacao fiscal validada',
-                },
-                cost: {
-                  costSource: 'Manual',
-                  currentCost: 100,
-                  freightCost: 4,
-                  insuranceCost: 0.5,
-                  otherCosts: 1.5,
-                },
-                settings: {
-                  participatesInPricing: true,
-                  allowTaxSimulation: true,
-                  monitorCostChanges: true,
-                  alertBelowMinimumMargin: true,
-                  defaultPricePolicy: 'Varejo padrao',
-                  defaultSalesChannel: 'Balcao',
-                  desiredMargin: 30,
-                  minimumMargin: 20,
-                },
-                costHistory: [],
-              }),
-            save: () =>
-              of({
-                id: '55555555-5555-5555-5555-555555555555',
-                internalCode: '000154',
-                description: 'Oleo Motor Sintetico 5W30',
-                status: 'Ativo',
-                savedAt: '2026-09-21T10:24:00Z',
-              }),
-          },
-        },
-        {
-          provide: PricingApiService,
-          useValue: {
-            getWorkspace: () =>
-              of({
-                product: {
-                  id: '55555555-5555-5555-5555-555555555555',
-                  name: 'Oleo Motor 5W30',
-                  code: '000154',
-                  status: 'Ativo',
-                  ncm: '27101932',
-                  brand: 'Shell',
-                  category: 'Lubrificantes',
-                },
-                scenario: {
-                  company: 'Empresa Alfa Ltda',
-                  branch: 'Matriz - Caxias do Sul/RS',
-                  selectedChannel: 'Balcao',
-                  operationDate: '2026-09-21',
-                },
-                lastUpdate: {
-                  updatedAt: '2026-09-21T10:24:00Z',
-                  updatedBy: 'Eduardo Almeida',
-                },
-                channels: [
-                  {
-                    id: '44444444-4444-4444-4444-444444444441',
-                    name: 'Balcao',
-                    currentPrice: 159.9,
-                    multiplier: 1,
-                    status: 'Atualizado',
-                  },
-                ],
-                calculationRequest: {
-                  tenantId: '11111111-1111-1111-1111-111111111111',
-                  companyId: '22222222-2222-2222-2222-222222222222',
-                  establishmentId: '33333333-3333-3333-3333-333333333333',
-                  productId: '55555555-5555-5555-5555-555555555555',
-                  salesChannelId: '44444444-4444-4444-4444-444444444441',
-                  operationDate: '2026-09-21',
-                  originState: 'RS',
-                  destinationState: 'RS',
-                  destinationCityCode: 4305108,
-                  ncm: '27101932',
-                  manualAcquisitionCost: 100,
-                  freightCost: 4,
-                  insuranceCost: 0.5,
-                  otherCosts: 1.5,
-                  desiredMargin: 30,
-                  minimumMargin: 22,
-                  currentPrice: 159.9,
-                  taxableBase: 159.9,
-                  roundingType: 3,
-                  costSource: 3,
-                  expenses: [],
-                },
-              }),
-            simulate: () =>
-              of({
-                formationId: '9601d4cd-c4fc-42c1-9dfb-454ed9f154be',
-                status: 1,
-                effectiveCost: 106,
-                minimumPrice: 188.9,
-                suggestedPrice: 212.06,
-                targetPrice: 212.9,
-                margin: 30.25,
-                markup: 100.84,
-                components: [],
-              }),
-          },
-        },
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter(routes)],
     }).compileComponents();
   });
 
@@ -158,11 +23,99 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render products page title', async () => {
+  it('should render login page title', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/login');
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Produtos');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Dados fiscais hoje.');
+  });
+
+  it('should request SaaS admin creation when no SaaS user exists', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/login');
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('Cadastrar administrador SaaS');
+  });
+
+  it('should create SaaS admin locally and hide setup modal', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/login');
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const inputs = compiled.querySelectorAll<HTMLInputElement>('.fiscal-bootstrap-modal input');
+
+    inputs[0].value = 'Administrador SaaS';
+    inputs[0].dispatchEvent(new Event('input'));
+    inputs[1].value = 'admin';
+    inputs[1].dispatchEvent(new Event('input'));
+    inputs[2].value = '123.456.789-00';
+    inputs[2].dispatchEvent(new Event('input'));
+    inputs[3].value = 'admin@uniflow.com';
+    inputs[3].dispatchEvent(new Event('input'));
+    inputs[4].value = '123456';
+    inputs[4].dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    compiled.querySelector<HTMLFormElement>('.fiscal-bootstrap-modal')?.dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
+
+    expect(localStorage.getItem(saasAdminStorageKey)).toContain('admin@uniflow.com');
+    expect(localStorage.getItem(saasAdminStorageKey)).toContain('123.456.789-00');
+    expect(localStorage.getItem(saasAdminStorageKey)).toContain('SistemaAdmin');
+    expect(compiled.textContent).not.toContain('Configuracao inicial');
+  });
+
+  it('should not show SaaS admin setup modal when admin already exists', async () => {
+    localStorage.setItem(
+      saasAdminStorageKey,
+      JSON.stringify({
+        nome: 'Administrador SaaS',
+        login: 'admin',
+        email: 'admin@uniflow.com',
+        role: 'SistemaAdmin',
+        ativo: true,
+      }),
+    );
+
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/login');
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).not.toContain('Configuracao inicial');
+    expect(compiled.textContent).not.toContain('Identificamos que ainda nao existe um usuario SaaS');
+  });
+
+  it('should render SaaS admin menu options', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/saas');
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    TestBed.inject(HttpTestingController)
+      .expectOne('http://localhost:5058/api/contracting-companies')
+      .flush([]);
+    TestBed.inject(HttpTestingController)
+      .expectOne('http://localhost:5058/api/contracting-users')
+      .flush([]);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('Visao Geral');
+    expect(compiled.textContent).toContain('Dados empresariais');
+    expect(compiled.textContent).toContain('Tickets para o desenvolvedor');
+    expect(compiled.textContent).toContain('Financeiro');
+    expect(compiled.textContent).toContain('Notas fiscais');
+    expect(compiled.textContent).toContain('Auditoria');
+    expect(compiled.textContent).toContain('Novo registro');
   });
 });

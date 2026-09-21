@@ -2,12 +2,9 @@
   display: block;
   min-height: 100dvh;
   color: #10233f;
-  font-family:
-    Inter,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
+  font-family: var(--font-interface);
+  font-size: 14px;
+  font-weight: 400;
   background: #edf4f7;
 }
 
@@ -188,6 +185,10 @@ button {
     place-items: center;
     font-weight: 800;
     margin-bottom: 10px;
+  }
+
+  strong {
+    font-weight: 700;
   }
 
   strong,

@@ -11,16 +11,16 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
       <div class="company-switcher">
         <strong>{{ companyName }}</strong>
-        <span>CNPJ 12.345.678/0001-90</span>
+        <span>CNPJ nao informado</span>
       </div>
 
       <button type="button" class="icon-button" (click)="notice.emit()" aria-label="Notificacoes">
         <span>!</span>
       </button>
-      <button type="button" class="avatar" aria-label="Perfil do usuario">EA</button>
+      <button type="button" class="avatar" aria-label="Perfil do usuario">--</button>
       <div class="user">
-        <strong>Eduardo Almeida</strong>
-        <span>Administrador</span>
+        <strong>Usuario nao identificado</strong>
+        <span>Perfil nao informado</span>
       </div>
     </header>
   `,

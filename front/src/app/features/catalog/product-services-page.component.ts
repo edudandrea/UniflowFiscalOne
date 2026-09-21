@@ -61,6 +61,11 @@ import { ProductServicesApiService } from './services/product-services-api.servi
               <span>{{ formatCurrency(product.currentCost) }}</span>
               <span class="status-dot">{{ product.status }}</span>
             </div>
+          } @empty {
+            <div class="module-empty-state">
+              <strong>Nenhum produto cadastrado</strong>
+              <span>Cadastre dados reais para iniciar os testes.</span>
+            </div>
           }
         </div>
       }
@@ -122,15 +127,15 @@ import { ProductServicesApiService } from './services/product-services-api.servi
               </section>
 
               <aside class="modal-preview">
-                <div class="product-bottle">5W30</div>
+                <div class="product-bottle">IMG</div>
                 <button type="button" class="upload-box">
                   <span>+</span>
                   Clique para adicionar uma imagem
                   <small>PNG, JPG ou WEBP ate 5MB</small>
                 </button>
                 <div class="image-strip">
-                  <span>5W</span>
-                  <span>LT</span>
+                  <span>--</span>
+                  <span>--</span>
                   <button type="button">+</button>
                 </div>
                 <div class="taxcore-status small">

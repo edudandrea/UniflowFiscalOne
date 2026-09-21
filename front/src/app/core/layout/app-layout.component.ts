@@ -23,7 +23,7 @@ import { TopbarComponent } from './topbar.component';
   `,
 })
 export class AppLayoutComponent {
-  protected companyName = 'Empresa Alfa Ltda';
+  protected companyName = 'Nenhuma empresa selecionada';
   protected activeModule: AppModule = 'catalog';
 
   protected showSystemNotice(): void {

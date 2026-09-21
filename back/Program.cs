@@ -1,5 +1,6 @@
 using back.Api.Pricing;
 using back.Api.Catalog;
+using back.Api.Saas;
 using back.Application.Pricing;
 using back.Application.Pricing.Costs;
 using back.Domain.Pricing.Services;
@@ -41,5 +42,8 @@ if (!app.Environment.IsDevelopment())
 app.UseCors("LocalAngular");
 app.MapProductServicesEndpoints();
 app.MapPricingEndpoints();
+app.MapContractingCompaniesEndpoints();
+app.MapContractingUsersEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();
