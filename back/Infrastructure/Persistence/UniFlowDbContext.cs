@@ -11,10 +11,6 @@ public sealed class UniFlowDbContext : DbContext
     {
     }
 
-    public DbSet<Tenants> Tenants => Set<Tenants>();
-    public DbSet<Users> Users => Set<Users>();
-    public DbSet<Planos> Planos => Set<Planos>();
-    public DbSet<GrupoEconomico> GruposEconomicos => Set<GrupoEconomico>();
     public DbSet<Empresas> Empresas => Set<Empresas>();
     public DbSet<Enderecos> Enderecos => Set<Enderecos>();
     public DbSet<Produtos> Produtos => Set<Produtos>();
@@ -32,59 +28,8 @@ public sealed class UniFlowDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.HasDefaultSchema("public");
-        ConfigureSaas(modelBuilder);
         ConfigureCatalog(modelBuilder);
         ConfigurePricing(modelBuilder);
-    }
-
-    private static void ConfigureSaas(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Tenants>(entity =>
-        {
-            entity.ToTable("tenants", "saas");
-            entity.HasKey(item => item.TenantId);
-            entity.Property(item => item.Razao_Social).HasMaxLength(180);
-            entity.Property(item => item.Nome_fantazia).HasMaxLength(180);
-            entity.Property(item => item.CNPJ).HasMaxLength(18);
-            entity.Property(item => item.Email).HasMaxLength(180);
-            entity.Property(item => item.PhoneNumber).HasMaxLength(32);
-        });
-
-        modelBuilder.Entity<Users>(entity =>
-        {
-            entity.ToTable("users", "saas");
-            entity.HasKey(item => item.UserId);
-            entity.Property(item => item.Name).HasMaxLength(160);
-            entity.Property(item => item.Email).HasMaxLength(180);
-            entity.Property(item => item.PhoneNumber).HasMaxLength(32);
-            entity.Property(item => item.Cargo).HasMaxLength(120);
-            entity.Property(item => item.UserType).HasMaxLength(40);
-            entity.Property(item => item.AccessModules).HasMaxLength(800);
-            entity.Property(item => item.PassHash).HasMaxLength(512);
-            entity.Property(item => item.CriadoEm).HasDefaultValueSql("now()");
-        });
-
-        modelBuilder.Entity<Planos>(entity =>
-        {
-            entity.ToTable("plans", "saas");
-            entity.HasKey(item => item.PlanoId);
-            entity.Property(item => item.PlanoNome).HasMaxLength(120);
-        });
-
-        modelBuilder.Entity<GrupoEconomico>(entity =>
-        {
-            entity.ToTable("economic_groups", "saas");
-            entity.HasKey(item => item.GrupoId);
-            entity.Property(item => item.Razao_Social).HasMaxLength(180);
-            entity.Property(item => item.Nome_fantazia).HasMaxLength(180);
-            entity.Property(item => item.CNPJ).HasMaxLength(18);
-            entity.Property(item => item.Email).HasMaxLength(180);
-            entity.Property(item => item.PhoneNumber).HasMaxLength(32);
-            entity.Property(item => item.RegimeTributario).HasMaxLength(80);
-            entity.Property(item => item.CNAE).HasMaxLength(20);
-            entity.Property(item => item.OptanteSimplesNacional).HasMaxLength(20);
-            entity.Property(item => item.UF).HasMaxLength(2);
-        });
     }
 
     private static void ConfigureCatalog(ModelBuilder modelBuilder)

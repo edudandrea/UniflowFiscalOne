@@ -7,16 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace back.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialPostgres : Migration
+    public partial class CurrentSolutionStructure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "catalog");
-
-            migrationBuilder.EnsureSchema(
-                name: "saas");
 
             migrationBuilder.EnsureSchema(
                 name: "pricing");
@@ -57,10 +54,18 @@ namespace back.Infrastructure.Persistence.Migrations
                     Tipo = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     CNPJ = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
                     nome = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
+                    NomeFantasia = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
                     UF = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     MunicipioId = table.Column<int>(type: "integer", nullable: false),
-                    InscricaoEstadual = table.Column<int>(type: "integer", nullable: false),
-                    InscricaoMunicipal = table.Column<int>(type: "integer", nullable: false)
+                    InscricaoEstadual = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    InscricaoMunicipal = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Segmento = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
+                    EmailPrincipal = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
+                    Telefone = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    Site = table.Column<string>(type: "character varying(240)", maxLength: 240, nullable: false),
+                    Plano = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Situacao = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    CriadoEm = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>
                 {
@@ -87,52 +92,6 @@ namespace back.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_company_fiscal_config", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "economic_groups",
-                schema: "saas",
-                columns: table => new
-                {
-                    GrupoId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Razao_Social = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    Nome_fantazia = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    CNPJ = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
-                    Email = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    InscricaoEstadual = table.Column<int>(type: "integer", nullable: false),
-                    InscricaoMunicipal = table.Column<int>(type: "integer", nullable: false),
-                    RegimeTributario = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
-                    CNAE = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    OptanteSimplesNacional = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    UF = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataAtivacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataCancelamento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_economic_groups", x => x.GrupoId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "plans",
-                schema: "saas",
-                columns: table => new
-                {
-                    PlanoId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PlanoNome = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
-                    Limite_Usuarios = table.Column<int>(type: "integer", nullable: false),
-                    Limita_Documentos = table.Column<int>(type: "integer", nullable: false),
-                    UsaIA = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_plans", x => x.PlanoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,49 +228,6 @@ namespace back.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tenants",
-                schema: "saas",
-                columns: table => new
-                {
-                    TenantId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Razao_Social = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    Nome_fantazia = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    CNPJ = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
-                    Email = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    PlanoId = table.Column<int>(type: "integer", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataAtivacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataCancelamento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tenants", x => x.TenantId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "users",
-                schema: "saas",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
-                    Email = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
-                    TenantId = table.Column<int>(type: "integer", nullable: false),
-                    PassHash = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
-                    LastLogin = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "price_components",
                 schema: "pricing",
                 columns: table => new
@@ -358,14 +274,6 @@ namespace back.Infrastructure.Persistence.Migrations
                 schema: "catalog");
 
             migrationBuilder.DropTable(
-                name: "economic_groups",
-                schema: "saas");
-
-            migrationBuilder.DropTable(
-                name: "plans",
-                schema: "saas");
-
-            migrationBuilder.DropTable(
                 name: "price_components",
                 schema: "pricing");
 
@@ -388,14 +296,6 @@ namespace back.Infrastructure.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "services",
                 schema: "catalog");
-
-            migrationBuilder.DropTable(
-                name: "tenants",
-                schema: "saas");
-
-            migrationBuilder.DropTable(
-                name: "users",
-                schema: "saas");
 
             migrationBuilder.DropTable(
                 name: "price_formations",

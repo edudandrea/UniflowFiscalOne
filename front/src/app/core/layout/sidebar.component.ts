@@ -7,17 +7,17 @@ export type AppModule = 'catalog' | 'pricing';
   template: `
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">U</div>
+        <div class="brand-mark">UF</div>
         <div>
           <strong>UniFlowFiscalOne</strong>
-          <span>Inteligencia fiscal em cada calculo</span>
+          <span>Inteligencia fiscal</span>
         </div>
       </div>
 
       <nav class="menu" aria-label="Menu principal">
         <button type="button" aria-label="Inicio">
           <span class="menu-icon">IN</span>
-          <span>Inicio</span>
+          <span>Dashboard</span>
         </button>
         <button type="button" aria-label="Documentos Fiscais">
           <span class="menu-icon">DF</span>
@@ -32,27 +32,42 @@ export type AppModule = 'catalog' | 'pricing';
           <span>Creditos</span>
         </button>
 
-        <div class="menu-parent" [class.active]="activeModule === 'catalog'">
-          <button type="button" aria-expanded="true" aria-label="Produtos e Servicos" (click)="navigate.emit('catalog')">
+        <div class="menu-parent" [class.active]="activeModule === 'catalog'" [class.expanded]="isExpanded('catalog')">
+          <button
+            type="button"
+            [attr.aria-expanded]="isExpanded('catalog')"
+            aria-controls="catalog-submenu"
+            aria-label="Produtos e Servicos"
+            (click)="toggleMenu('catalog')"
+          >
             <span class="menu-icon">PS</span>
             <span>Produtos e Servicos</span>
             <span class="chevron">v</span>
           </button>
-          <div class="submenu">
+          @if (isExpanded('catalog')) {
+          <div id="catalog-submenu" class="submenu">
             <button type="button" [class.active]="activeModule === 'catalog'" (click)="navigate.emit('catalog')">Produtos</button>
             <button type="button">Servicos</button>
             <button type="button">Categorias</button>
             <button type="button">Historico de Custos</button>
           </div>
+          }
         </div>
 
-        <div class="menu-parent" [class.active]="activeModule === 'pricing'">
-          <button type="button" aria-expanded="true" aria-label="Formacao de Preco" (click)="navigate.emit('pricing')">
+        <div class="menu-parent" [class.active]="activeModule === 'pricing'" [class.expanded]="isExpanded('pricing')">
+          <button
+            type="button"
+            [attr.aria-expanded]="isExpanded('pricing')"
+            aria-controls="pricing-submenu"
+            aria-label="Formacao de Preco"
+            (click)="toggleMenu('pricing')"
+          >
             <span class="menu-icon">FP</span>
             <span>Formacao de Preco</span>
             <span class="chevron">v</span>
           </button>
-          <div class="submenu">
+          @if (isExpanded('pricing')) {
+          <div id="pricing-submenu" class="submenu">
             <button type="button" [class.active]="activeModule === 'pricing'" (click)="navigate.emit('pricing')">Produtos</button>
             <button type="button">Simulacoes</button>
             <button type="button">Tabelas de Preco</button>
@@ -60,6 +75,7 @@ export type AppModule = 'catalog' | 'pricing';
             <button type="button">Canais de Venda</button>
             <button type="button">Historico</button>
           </div>
+          }
         </div>
 
         <button type="button" aria-label="Reforma Tributaria">
@@ -93,4 +109,19 @@ export type AppModule = 'catalog' | 'pricing';
 export class SidebarComponent {
   @Input() activeModule: AppModule = 'catalog';
   @Output() navigate = new EventEmitter<AppModule>();
+
+  protected expandedMenus = new Set<AppModule>();
+
+  protected isExpanded(module: AppModule): boolean {
+    return this.expandedMenus.has(module);
+  }
+
+  protected toggleMenu(module: AppModule): void {
+    if (this.expandedMenus.has(module)) {
+      this.expandedMenus.delete(module);
+      return;
+    }
+
+    this.expandedMenus.add(module);
+  }
 }

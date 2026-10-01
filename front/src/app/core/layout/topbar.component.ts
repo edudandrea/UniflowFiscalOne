@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   template: `
     <header class="topbar">
       <label class="search">
-        <span>Q</span>
+        <span aria-hidden="true">Q</span>
         <input type="search" placeholder="Buscar produtos, NCM, CFOP, clientes, simulacoes..." />
       </label>
 
@@ -17,10 +17,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       <button type="button" class="icon-button" (click)="notice.emit()" aria-label="Notificacoes">
         <span>!</span>
       </button>
-      <button type="button" class="avatar" aria-label="Perfil do usuario">--</button>
+      <button type="button" class="icon-button has-alert" aria-label="Mensagens">
+        <span>?</span>
+      </button>
+      <button type="button" class="avatar" aria-label="Perfil do usuario">ED</button>
       <div class="user">
-        <strong>Usuario nao identificado</strong>
-        <span>Perfil nao informado</span>
+        <strong>Eduardo D'Arcorea</strong>
+        <span>Perfil executivo</span>
       </div>
     </header>
   `,
